@@ -1,0 +1,24 @@
+# ---------------------------------------------------------------------------
+# Normalize line endings so files behave the same on Windows, macOS and Linux.
+# Without this, Windows checks files out with CRLF, which breaks anything
+# that must start with an exact byte sequence — like the `#!/usr/bin/env node`
+# shebang on our .mjs hook scripts (LF-only).
+# ---------------------------------------------------------------------------
+
+* text=auto eol=lf
+
+*.sh text eol=lf
+*.mjs text eol=lf
+*.cjs text eol=lf
+
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.svg binary
+*.woff binary
+*.woff2 binary
