@@ -51,12 +51,12 @@ ksp-backend  →  openapi.json  →  npm run generate:api  →  src/api/generate
 
 ## Commands
 
-| Command | Description |
-|---|---|
-| `npm run dev` | Vite dev server |
-| `npm run build` | production build (also typechecks) |
-| `npm run preview` | serve the production build locally |
-| `npm test` | Vitest |
+| Command                | Description                                     |
+| ---------------------- | ----------------------------------------------- |
+| `npm run dev`          | Vite dev server                                 |
+| `npm run build`        | production build (also typechecks)              |
+| `npm run preview`      | serve the production build locally              |
+| `npm test`             | Vitest                                          |
 | `npm run generate:api` | regenerate the API client from the backend spec |
 
 ---
@@ -71,7 +71,6 @@ src/
   hooks/        shared hooks
   lib/          helpers (money formatting, storage)
   routes/       routing + protected routes
-LEARNING/       teaching notes (Tailwind, TanStack Query, generated client)
 ```
 
 ---
@@ -83,6 +82,6 @@ LEARNING/       teaching notes (Tailwind, TanStack Query, generated client)
 - **Money arrives as integer cents.** Format with `Intl.NumberFormat` at display time; never
   do currency math in floats.
 - **Loading, error and empty states are handled explicitly** — an unhandled error state is a bug.
-- **Tailwind is explained as it is introduced** (it's new to the author) — see `LEARNING/`.
+- **Tailwind is explained as it is introduced** (it's new to the author).
 
-Full conventions live in the workspace-root `../.claude/rules/frontend.md`.
+Full conventions live in this repo's `.claude/rules/`.
