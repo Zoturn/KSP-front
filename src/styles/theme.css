@@ -1,0 +1,132 @@
+/*
+ * The design tokens. The rules live in .claude/rules/tailwind.md; this file is
+ * the one place a visual value is allowed to be written down.
+ *
+ * Two tiers, and only the second may appear in markup:
+ *
+ *   1. PRIMITIVES (@theme)        facts about colour: "brand-600 is this blue".
+ *   2. SEMANTIC   (@theme inline) roles: "surface is the card background".
+ *
+ * Every semantic colour was checked against WCAG contrast when these bindings
+ * were chosen: text >= 4.5:1 on every surface it can sit on, `border-strong`
+ * and `focus` >= 3:1. Change a binding and re-check it; do not eyeball it.
+ */
+
+/* ---------------------------------------------------------------- Tier 1 */
+/*
+ * Neutrals and state hues come from Tailwind's own palette (slate, green,
+ * amber, red) and are only *referenced* below. The brand scale is ours.
+ */
+@theme {
+  --color-brand-50: oklch(97% 0.014 262);
+  --color-brand-100: oklch(93% 0.032 262);
+  --color-brand-600: oklch(51% 0.2 262);
+  --color-brand-700: oklch(45% 0.19 262);
+  --color-brand-800: oklch(40% 0.17 262);
+}
+
+/* ------------------------------------------- Semantic bindings (light) */
+/*
+ * Plain custom properties, *not* theme variables. A future dark theme is
+ * exactly a second block of these, under [data-theme='dark'], rebinding the
+ * same names to different primitives — nothing else moves.
+ */
+:root {
+  --canvas: var(--color-slate-50);
+  --surface: var(--color-white);
+  --surface-raised: var(--color-white);
+  --surface-sunken: var(--color-slate-100);
+
+  --content: var(--color-slate-900);
+  --content-muted: var(--color-slate-700);
+  /* The contrast floor: nothing lighter exists on purpose. slate-500 would be
+     4.35:1 on the sunken surface, below the 4.5:1 minimum. */
+  --content-subtle: var(--color-slate-600);
+  --content-inverted: var(--color-white);
+
+  /* `border` is decorative. Form controls use `border-strong` (3:1 required). */
+  --border: var(--color-slate-200);
+  --border-strong: var(--color-slate-500);
+
+  --primary: var(--color-brand-600);
+  --primary-hover: var(--color-brand-700);
+  --primary-active: var(--color-brand-800);
+  --primary-content: var(--color-white);
+  --primary-subtle: var(--color-brand-50);
+  --primary-emphasis: var(--color-brand-700);
+
+  --success: var(--color-green-700);
+  --success-subtle: var(--color-green-50);
+  --success-emphasis: var(--color-green-800);
+
+  /* A warning fill carries `content`, never `content-inverted`: white on this
+     amber is 1.72:1. There is deliberately no token that would allow it. */
+  --warning: var(--color-amber-400);
+  --warning-subtle: var(--color-amber-50);
+  --warning-emphasis: var(--color-amber-900);
+
+  --danger: var(--color-red-700);
+  --danger-subtle: var(--color-red-50);
+  --danger-emphasis: var(--color-red-800);
+
+  --focus: var(--color-brand-600);
+
+  /* Shadows are themed too: a black shadow is invisible on a dark surface. */
+  --elevation-raised:
+    0 1px 2px 0 oklch(20.8% 0.042 265.755 / 0.08),
+    0 1px 3px 0 oklch(20.8% 0.042 265.755 / 0.1);
+  --elevation-overlay:
+    0 4px 6px -1px oklch(20.8% 0.042 265.755 / 0.1),
+    0 10px 15px -3px oklch(20.8% 0.042 265.755 / 0.12);
+
+  /* z-index is not a Tailwind theme namespace. Use `z-(--z-modal)`; a raw
+     `z-50` or `z-[9999]` is a bug. */
+  --z-sticky: 20;
+  --z-dropdown: 30;
+  --z-modal: 40;
+  --z-toast: 50;
+}
+
+/* --------------------------------------------------------------- Tier 2 */
+/*
+ * `inline` is load-bearing. It makes `bg-surface` compile to
+ * `background-color: var(--surface)`, resolved *at the element*, so it picks
+ * up the nearest [data-theme] override. Without it the reference resolves
+ * once at :root and a dark theme silently does nothing.
+ */
+@theme inline {
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-surface-raised: var(--surface-raised);
+  --color-surface-sunken: var(--surface-sunken);
+
+  --color-content: var(--content);
+  --color-content-muted: var(--content-muted);
+  --color-content-subtle: var(--content-subtle);
+  --color-content-inverted: var(--content-inverted);
+
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-active: var(--primary-active);
+  --color-primary-content: var(--primary-content);
+  --color-primary-subtle: var(--primary-subtle);
+  --color-primary-emphasis: var(--primary-emphasis);
+
+  --color-success: var(--success);
+  --color-success-subtle: var(--success-subtle);
+  --color-success-emphasis: var(--success-emphasis);
+  --color-warning: var(--warning);
+  --color-warning-subtle: var(--warning-subtle);
+  --color-warning-emphasis: var(--warning-emphasis);
+  --color-danger: var(--danger);
+  --color-danger-subtle: var(--danger-subtle);
+  --color-danger-emphasis: var(--danger-emphasis);
+
+  --color-focus: var(--focus);
+
+  --shadow-raised: var(--elevation-raised);
+  --shadow-overlay: var(--elevation-overlay);
+}

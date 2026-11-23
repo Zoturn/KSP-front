@@ -1,0 +1,12 @@
+/*
+ * `source('../')` makes Tailwind scan only `src/` for class names. Without it,
+ * v4 auto-detects sources across the whole project, including `.claude/rules`
+ * and `openspec/`, whose documentation quotes banned classes as examples. Those
+ * would be generated into the CSS we ship. See .claude/rules/tailwind.md.
+ *
+ * `index.html` sits outside `src/` but carries classes (the <body> surface), so
+ * it is added back by name.
+ */
+@import 'tailwindcss' source('../');
+@source '../../index.html';
+@import './theme.css';

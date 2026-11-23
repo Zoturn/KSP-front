@@ -54,6 +54,9 @@ LEARNING/         # local working notes — gitignored, never committed
 npm run dev            # Vite dev server
 npm run build          # production build
 npm run test           # Vitest
+npm run typecheck      # tsc -b, no emit
+npm run lint           # oxlint
+npm run format         # Prettier --write (format:check to verify)
 npm run generate:api   # regenerate the API client from the backend spec
 ```
 

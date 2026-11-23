@@ -57,6 +57,9 @@ ksp-backend  →  openapi.json  →  npm run generate:api  →  src/api/generate
 | `npm run build`        | production build (also typechecks)              |
 | `npm run preview`      | serve the production build locally              |
 | `npm test`             | Vitest                                          |
+| `npm run typecheck`    | type-check without building                     |
+| `npm run lint`         | oxlint                                          |
+| `npm run format`       | Prettier, write (`format:check` only verifies)  |
 | `npm run generate:api` | regenerate the API client from the backend spec |
 
 ---

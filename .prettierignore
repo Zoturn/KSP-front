@@ -1,0 +1,6 @@
+node_modules/
+dist/
+coverage/
+# Build output from graphql-codegen — never hand-edited, never formatted
+src/api/generated/
+package-lock.json

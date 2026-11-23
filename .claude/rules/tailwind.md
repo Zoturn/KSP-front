@@ -15,6 +15,18 @@ paths:
 
 Full explanation: `LEARNING/00-tailwind.md` (local notes, gitignored).
 
+## Source scanning is restricted to `src/` — keep it that way
+
+Tailwind v4 auto-detects class names across the **whole project**, markdown included. The
+stylesheet entry therefore uses `@import 'tailwindcss' source('../')`, which limits scanning to
+`src/`. Without it, the banned examples quoted in `.claude/rules/` and `openspec/` (`z-[9999]`,
+`bg-slate-100`, a `dark:` variant) are generated into the CSS that ships — measured at 10.7 kB
+against 4.8 kB. Do not remove `source()`. Two consequences: `index.html` is outside `src/`, so it
+is added back with `@source` (the `<body>` surface classes live there); and class names written in
+comments *inside* `src/` are scanned too, so a `.tsx` comment quoting a banned class re-introduces
+it. After editing either `source()` or `@source`, **restart the dev server** — it keeps serving the
+old scan until it does.
+
 ## Two token tiers — and only one is allowed in markup
 
 | Tier | Example | Where it may appear |

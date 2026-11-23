@@ -120,7 +120,8 @@ other answer.
 @tailwindcss/vite (the v4 plugin `tailwind.md` requires), vite, typescript, vitest,
 @testing-library/react, @testing-library/user-event and @testing-library/jest-dom (both
 required by `testing.md`), @graphql-codegen/\*, graphql,
-@trivago/prettier-plugin-sort-imports, prettier, eslint.
+@trivago/prettier-plugin-sort-imports, prettier, oxlint (not ESLint: `typescript-eslint` does not yet
+accept TypeScript 7, which is what the current scaffold installs).
 
 **Conventions**: this is the change that turns `frontend.md`, `tailwind.md` and `testing.md`
 from written claims into enforced practice — and the first opportunity to find out where those
