@@ -22,7 +22,7 @@ context: |
     - ksp-backend is GraphQL-ONLY: one endpoint, POST /graphql. There is no REST API and no
       OpenAPI spec. The only REST routes are /api/health and /api/uploads/*
     - This repo generates its ENTIRE typed client from ksp-backend's committed schema.gql:
-      backend decorators -> schema.gql (committed) -> graphql-codegen -> typed hooks
+      backend decorators -> schema.gql (committed) -> graphql-codegen -> typed documents
     - Generate from the committed FILE, never a live URL. Introspection is disabled in
       production, so a URL-based config works in dev and fails in CI
     - If the backend schema changes, this repo fails to compile. That is the safety net

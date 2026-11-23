@@ -12,7 +12,7 @@ currently a claim with nothing demonstrating it.
 
 The useful thing to build first is not a product page. It is the **shell plus the contract
 pipeline**: an app that runs, a design system with real tokens, and `graphql-codegen` actually
-generating a typed hook from the backend's committed `schema.gql` and rendering its result.
+generating a typed document from the backend's committed `schema.gql` and rendering its result.
 That last part matters more than it looks — it proves the cross-repo contract end to end while
 the contract is still one field wide and mistakes are cheap. If codegen is wired for the first
 time against nine catalog types, any problem in the pipeline is tangled up with the catalog.
