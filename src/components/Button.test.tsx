@@ -1,3 +1,5 @@
+import type { FormEvent } from 'react';
+
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
@@ -100,7 +102,7 @@ describe('Button', () => {
 
   it('does not submit a surrounding form unless asked to', async () => {
     const user = userEvent.setup();
-    const onSubmit = vi.fn((event: React.FormEvent) => event.preventDefault());
+    const onSubmit = vi.fn((event: FormEvent) => event.preventDefault());
     render(
       <form onSubmit={onSubmit}>
         <Button>Plain</Button>

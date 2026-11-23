@@ -71,6 +71,23 @@ describe('Input', () => {
     );
   });
 
+  it('uses an id the caller supplies and still wires the label and hint to it', () => {
+    render(<Input id="email-field" label="Email" hint="We never share it" />);
+    const field = screen.getByLabelText('Email');
+
+    expect(field).toHaveAttribute('id', 'email-field');
+    expect(field).toHaveAccessibleDescription('We never share it');
+  });
+
+  it('describes the field with its hint alone when there is no error', () => {
+    render(<Input label="Name" hint="As on your card" />);
+    const field = screen.getByLabelText('Name');
+
+    expect(field).toHaveAccessibleDescription('As on your card');
+    expect(field).toBeValid();
+    expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+  });
+
   it('passes typing through to onChange', async () => {
     const user = userEvent.setup();
     const onChange = vi.fn();

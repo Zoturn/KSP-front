@@ -1,6 +1,8 @@
 import { act } from 'react';
 import type { ReactElement } from 'react';
 
+import type { RouteObject } from 'react-router';
+
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
@@ -42,16 +44,20 @@ describe('route error boundary', () => {
   // `Boom` throws while rendering until `shouldThrow` is switched off, which is
   // how the retry test models "the second attempt works".
   let shouldThrow = true;
+  let renderAttempts = 0;
   function Boom(): ReactElement {
+    renderAttempts += 1;
     if (shouldThrow) throw new Error('kaboom: internal detail');
     return <h1>Recovered page</h1>;
   }
 
-  const routes = () => buildRoutes([{ path: 'boom', Component: Boom }]);
+  const routes = (): RouteObject[] =>
+    buildRoutes([{ path: 'boom', Component: Boom }]);
   let errorSpy: ReturnType<typeof vi.spyOn>;
 
   beforeEach(() => {
     shouldThrow = true;
+    renderAttempts = 0;
     // React and react-router both log a caught render error; keep the output
     // readable, and keep the spy to assert the error is not swallowed.
     errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
@@ -115,12 +121,30 @@ describe('route error boundary', () => {
     expect(screen.queryByRole('alert')).not.toBeInTheDocument();
   });
 
+  it('retries the same URL, query string included', async () => {
+    const user = userEvent.setup();
+    const { router } = renderRoutes(routes(), '/boom?sort=price#reviews');
+
+    shouldThrow = false;
+    await user.click(screen.getByRole('button', { name: 'Try again' }));
+    await screen.findByRole('heading', { name: 'Recovered page' });
+
+    expect(router.state.location.pathname).toBe('/boom');
+    expect(router.state.location.search).toBe('?sort=price');
+    expect(router.state.location.hash).toBe('#reviews');
+  });
+
   it('keeps showing the error if the retry fails again', async () => {
     const user = userEvent.setup();
     renderRoutes(routes(), '/boom');
+    // React may try a failing render more than once on its own, so compare
+    // against the count before the click rather than a fixed number.
+    const attemptsBeforeRetry = renderAttempts;
 
     await user.click(screen.getByRole('button', { name: 'Try again' }));
 
+    // The page was genuinely asked to render again, and failed again.
+    expect(renderAttempts).toBeGreaterThan(attemptsBeforeRetry);
     expect(screen.getByRole('alert')).toHaveTextContent(
       'This page failed to load',
     );

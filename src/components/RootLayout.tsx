@@ -3,6 +3,7 @@ import type { ReactElement } from 'react';
 import { Link, NavLink, Outlet } from 'react-router';
 
 import { cn } from '@/lib/cn';
+import { colorTransition, focusRing } from '@/lib/interactive';
 
 import { paths } from '@/routes/paths';
 
@@ -12,9 +13,6 @@ const navItems = [
   { to: paths.home, label: 'Home', end: true },
   { to: paths.status, label: 'API status', end: false },
 ] as const;
-
-const focusRing =
-  'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus';
 
 /**
  * The frame every route renders inside: header, page content, footer.
@@ -50,7 +48,7 @@ export function RootLayout(): ReactElement {
                     className={({ isActive }) =>
                       cn(
                         'rounded-md px-3 py-2 text-sm font-medium',
-                        'transition-colors motion-reduce:transition-none',
+                        colorTransition,
                         focusRing,
                         isActive
                           ? 'bg-primary-subtle text-primary-emphasis'

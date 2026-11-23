@@ -37,7 +37,7 @@ export function buildRoutes(extraPages: RouteObject[] = []): RouteObject[] {
           ErrorBoundary: RouteError,
           children: [
             { index: true, Component: HomePage },
-            { path: 'status', Component: StatusPage },
+            { path: paths.status, Component: StatusPage },
             ...extraPages,
             { path: '*', Component: NotFoundPage },
           ],

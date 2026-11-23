@@ -3,6 +3,7 @@ import type { ComponentProps, ReactElement } from 'react';
 import { Link } from 'react-router';
 
 import { cn } from '@/lib/cn';
+import { colorTransition, focusRing } from '@/lib/interactive';
 
 /**
  * An in-app link styled as text. It wraps react-router's `Link`, so following
@@ -16,8 +17,9 @@ export function TextLink({
     <Link
       className={cn(
         'rounded-md font-medium text-primary-emphasis underline underline-offset-2',
-        'transition-colors motion-reduce:transition-none hover:text-primary-active',
-        'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus',
+        colorTransition,
+        'hover:text-primary-active',
+        focusRing,
         className,
       )}
       {...rest}

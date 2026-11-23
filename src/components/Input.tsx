@@ -2,6 +2,7 @@ import { useId } from 'react';
 import type { ComponentProps, ReactElement } from 'react';
 
 import { cn } from '@/lib/cn';
+import { focusRing } from '@/lib/interactive';
 
 type InputProps = Omit<ComponentProps<'input'>, 'id'> & {
   /** Visible label. Required: an input with no label has no accessible name. */
@@ -53,7 +54,7 @@ export function Input({
           // has to reach 3:1 contrast to be findable. The error colour pairs
           // with the message text, so colour is never the only signal.
           error ? 'border-danger' : 'border-border-strong',
-          'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus',
+          focusRing,
           'disabled:cursor-not-allowed disabled:opacity-50',
           className,
         )}
