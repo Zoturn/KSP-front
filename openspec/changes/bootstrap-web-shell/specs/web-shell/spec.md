@@ -51,11 +51,12 @@ reason the entire application disappears.
 - **AND** offers the visitor a way to retry or return to a working page
 - **AND** the visitor is never left looking at an empty page with no explanation
 
-### Requirement: Loading, empty and error are distinct, visible states
+### Requirement: Loading, empty, error and success are distinct, visible states
 
-The system SHALL treat "data has not arrived yet", "data arrived and there is none" and "data
-could not be fetched" as three different things the visitor can tell apart. None of them MAY be
-rendered as an indefinite blank area.
+The system SHALL treat "data has not arrived yet", "data arrived and there is none", "data
+could not be fetched" and "data arrived and is being shown" as four different things the
+visitor can tell apart. None of the first three MAY be rendered as an indefinite blank area,
+and the fourth MUST NOT be reached while any of the others still applies.
 
 This is a requirement rather than a guideline because the failure is invisible in development,
 where data is fast and present: the empty and error paths are the ones that reach users
@@ -78,6 +79,12 @@ untested.
 - **THEN** the system says that it failed
 - **AND** offers a way to retry
 - **AND** does not present the failure as an empty result
+
+#### Scenario: Data arrives with content
+
+- **WHEN** a view's data loads successfully and contains something to show
+- **THEN** the system renders that content
+- **AND** no loading, empty or error indication remains visible
 
 ### Requirement: Visual decisions come from a single token set
 

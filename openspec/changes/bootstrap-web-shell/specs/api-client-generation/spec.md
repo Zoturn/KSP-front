@@ -53,6 +53,43 @@ on a fresh clone, not an exotic one.
 - **THEN** generation fails with a message naming the path it expected and how to obtain it
 - **AND** no partial or stale client is produced
 
+#### Scenario: The schema disappears after a client was already generated
+
+- **WHEN** generation runs without a schema while output from an earlier run is present
+- **THEN** that earlier output is not left behind for a subsequent build or test run to consume
+- **AND** the failure is reported in terms of the missing schema, not of missing generated code
+
+### Requirement: A reported error is never consumed as success, and arriving data is never discarded
+
+The system SHALL decide success or failure from the reported errors rather than from the
+transport status, because the API reports application failures with a success status. A result
+carrying errors and no data MUST be surfaced as a failure, together with the machine-readable
+code that tells the caller what kind of failure it was. A result carrying both data and errors
+MUST make both available: the data that resolved is not thrown away because something beside
+it did not.
+
+Both halves are failure modes that have shipped in real applications: the first renders an
+error as an empty success, and the second blanks a mostly-working page over one failed field.
+
+#### Scenario: The result reports errors and carries no data
+
+- **WHEN** a request completes and reports errors with no accompanying data
+- **THEN** the caller observes a failure
+- **AND** the failure carries the machine-readable code and any field-level validation details
+
+#### Scenario: The result carries both data and errors
+
+- **WHEN** a request completes with some data and a reported error beside it
+- **THEN** the caller observes the data that resolved
+- **AND** the reported errors remain available to be surfaced
+
+#### Scenario: The request itself fails
+
+- **WHEN** a request fails in transport, is rejected as a malformed document, or returns a body
+  that is not a valid result
+- **THEN** the caller observes a failure
+- **AND** never an empty success
+
 ### Requirement: Drift between the client and the schema breaks the build
 
 The system SHALL surface a backend schema change that invalidates this repository's queries as a

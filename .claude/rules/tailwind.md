@@ -13,7 +13,7 @@ paths:
 `src/styles/theme.css` using `@theme`. Entry point is `@import "tailwindcss";` (never the old
 `@tailwind base/components/utilities`). Vite plugin is `@tailwindcss/vite`.
 
-Full explanation: `LEARNING/00-tailwind.md`.
+Full explanation: `LEARNING/00-tailwind.md` (local notes, gitignored).
 
 ## Two token tiers — and only one is allowed in markup
 

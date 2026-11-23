@@ -29,7 +29,10 @@ paths:
   avoidable.
 
 ## Mocking the API
-- **Mock at the API boundary, not `fetch`.** The generated GraphQL client is the seam.
+- **Mock at the API boundary, not `fetch`.** That boundary is the **transport wrapper**, which
+  is what turns a GraphQL response into data or a thrown `GraphQLRequestError`. Codegen emits
+  typed documents rather than hooks here, so there is no generated client function to stand in
+  front of — the wrapper is the seam. Its own unit tests are the one place `fetch` is mocked.
 - Components using server state need a `QueryClientProvider` wrapper — use a shared
   `renderWithProviders` test helper rather than repeating setup.
 - In tests, create the `QueryClient` with `retry: false` so failure tests don't wait for

@@ -34,8 +34,10 @@ The backend is **GraphQL-only** — there is no REST API and no OpenAPI spec.
 
 ## Writing queries
 
-- Co-locate `.graphql` documents (or `gql` tags) with the feature that uses them; codegen
-  produces a typed hook per operation.
+- Co-locate `.graphql` documents (or `gql` tags) with the feature that uses them. Codegen
+  produces a **typed document** per operation, not a hook: the document carries its result and
+  variable types into `useQuery` through the transport wrapper. This project deliberately has
+  no Apollo-style generated client — see `bootstrap-web-shell`'s Decision 1.
 - **Select only the fields the component renders.** Over-selecting silently costs backend
   work — this is the discipline GraphQL trades for its flexibility.
 - Name every operation (`query ProductGrid { ... }`) — names appear in codegen output,
@@ -74,15 +76,18 @@ display edge with `Intl.NumberFormat` using the `currency` field from the API.
 - Handle all three states explicitly: **loading, error, empty**. An unhandled error state is
   a bug, not a nicety.
 
-## Tailwind (the author is learning it — explain as you go)
+## Tailwind (explain unfamiliar utilities as you go)
 
 - Utility-first: style with classes in the markup (`flex items-center gap-4 rounded-lg`)
   rather than writing custom CSS. **When you introduce an unfamiliar utility, say what it does.**
 - Extract a **component**, not an `@apply` soup, when markup repeats.
 - Use the design scale (`p-4`, `text-sm`, `gap-2`) — avoid arbitrary values like `p-[13px]`
   unless genuinely necessary.
-- Responsive and state variants are prefixes: `md:flex-row`, `hover:bg-slate-100`,
-  `disabled:opacity-50`, `dark:bg-slate-900`.
+- Responsive and state variants are prefixes: `md:flex-row`, `hover:bg-surface-raised`,
+  `disabled:opacity-50`, `focus-visible:outline-focus`. The colour utilities in that list are
+  **semantic tokens on purpose** — `bg-slate-100` is a primitive and is banned in markup, and
+  theming is the `data-theme` attribute rather than a `dark:` variant. `tailwind.md` is the
+  authority on both, and it is more specific than this file.
 - Keep class lists readable; order roughly layout → spacing → typography → color → state.
 
 ## Import order
@@ -123,7 +128,7 @@ before this does anything — it matches literal import specifiers, not resolved
 Semantic elements first (`button`, `nav`, `label`). Every input has a label; every image has
 `alt`. Interactive elements must be keyboard-reachable and show a visible focus ring.
 
-## Teaching requirement
+## Explanation requirement
 
 Pair every component with tests, and explain new React/Query/Tailwind concepts the first time
-they appear. Capture durable concepts in `ksp-frontend/LEARNING/`.
+they appear. Capture durable concepts in `ksp-frontend/LEARNING/` (local notes, gitignored).

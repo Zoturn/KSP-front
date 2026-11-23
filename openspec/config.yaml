@@ -5,9 +5,8 @@ context: |
   Purpose: React web UI for the KSP e-commerce catalog — browse products, navigate
   categories, and later cart/checkout/account.
   App root: ksp-frontend/
-  Nature: LEARNING PROJECT — the author is new to Tailwind (and to NestJS/GraphQL on the
-  sister repo). Clarity and teachability outrank cleverness; every component ships with
-  tests AND a written explanation, and Tailwind concepts are explained as they appear.
+  Nature: Clarity outranks cleverness — every component ships with tests AND a written
+  explanation, and Tailwind concepts are explained the first time they appear.
 
   Tech stack:
     - Runtime/tooling: Node >= 24.9 (same floor as the backend), Vite, TypeScript
@@ -50,7 +49,7 @@ context: |
     - Accessibility is not a later pass — semantic elements, labelled controls, keyboard paths
     - Import order is enforced by @trivago/prettier-plugin-sort-imports
 
-  Learning artifacts:
+  Local notes:
     - Durable concepts are captured in LEARNING/NN-topic.md (00-tailwind.md already exists)
     - LEARNING/ is GITIGNORED — the notes are personal working material, so a task that
       writes one records that fact rather than expecting the file in a diff
@@ -74,8 +73,8 @@ rules:
     - Include a "Non-goals" section to prevent scope creep
     - Call out explicitly if anything would hand-write a type that codegen should own
   design:
-    - Name the specific React/Tailwind/TanStack Query concepts the change introduces — this
-      project is a teaching vehicle, and Tailwind in particular is new to the author
+    - Name the specific React/Tailwind/TanStack Query concepts the change introduces — the
+      explanation is part of the deliverable, and Tailwind's token rules are easy to get wrong
     - Show the token/theme impact for any visual decision, not just the component list
     - 'State the query-key strategy and cache invalidation for anything touching server state'
   tasks:

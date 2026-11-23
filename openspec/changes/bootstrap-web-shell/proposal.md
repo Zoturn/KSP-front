@@ -39,8 +39,10 @@ hand-written API types; this change does not create an exception.
 
 - **Scaffold** Vite + React + TypeScript, with the repo's Node floor (`>= 24.9`, matching the
   backend) pinned in `engines` and `.nvmrc`.
-- **Tailwind with a token layer** — colours, spacing, radii and typography defined once as
-  design tokens and consumed through them, not as ad-hoc utility values scattered in markup.
+- **Tailwind v4 with the token layer `tailwind.md` already specifies** — two tiers in
+  `src/styles/theme.css`, primitives under `@theme` and semantic roles under `@theme inline`,
+  with only the semantic tier allowed in markup. This change implements that rule; it does not
+  design a token set, and it defines no spacing tokens (the rule forbids them).
 - **Design-system primitives**: `Button`, `Input`, `Card`, `Spinner`, `Alert` — the smallest set
   the shell needs, each with tests and an explanation. No component library (MUI was raised and
   rejected; `config.yaml` records that).
@@ -57,11 +59,15 @@ hand-written API types; this change does not create an exception.
   scaffold → tokens → primitives → query client → generated types → rendered output.
 - **Vitest + React Testing Library**, with the first tests written alongside the primitives
   rather than after them.
-- **Documentation fixes** this work exposes: `CLAUDE.md` still describes `api/` as holding an
+- **Documentation fixes** this work exposes. `CLAUDE.md` still describes `api/` as holding an
   "axios instance & interceptors" (a REST leftover in a GraphQL-only project), points at
   `../.claude/rules/frontend.md` when those rules live in this repo, calls `schema.gql` "the
   backend spec", and states the HTTP-200 error rule without the parse/validation exception the
-  backend verified.
+  backend verified. Two rule files also describe a design this change rejects, and would
+  misdirect the implementation if left: `frontend.md` illustrates Tailwind variants with
+  primitive classes that `tailwind.md` bans and promises "a typed hook per operation" that
+  codegen will not produce here, while `testing.md` names "the generated GraphQL client" as the
+  mocking seam when the seam is the transport wrapper.
 
 No **BREAKING** changes — there is nothing yet to break.
 
@@ -93,9 +99,10 @@ None. This repo has no existing specs — `openspec/` was initialised by this ch
 
 ## Impact
 
-**New files**: essentially the whole repo — `package.json`, Vite/TS/Tailwind/Vitest/ESLint
-configs, `codegen.ts`, `src/` (`main.tsx`, `App.tsx`, `api/`, `components/`, `lib/`, `routes/`,
-`styles/tokens.css`), and test files alongside each component.
+**New files**: essentially the whole repo — `package.json`, Vite/TS/Vitest/ESLint configs
+(no `tailwind.config.js`; v4 is CSS-first), `codegen.ts`, `.env.example`, `src/` (`main.tsx`,
+`App.tsx`, `api/`, `components/`, `lib/`, `routes/`, `styles/theme.css`), and test files
+alongside each component.
 
 **Cross-repo**: adds a build-time dependency on `../ksp-backend/schema.gql` by relative path.
 That couples the two working trees on one developer machine, which is worth stating plainly —
@@ -103,8 +110,16 @@ it is a deliberate trade for not depending on a running server or a published pa
 missing or stale backend checkout must produce a clear error from the generate script, not a
 confusing type error.
 
-**Dependencies**: react, react-dom, react-router, @tanstack/react-query, tailwindcss, vite,
-typescript, vitest, @testing-library/react, @graphql-codegen/\*, graphql,
+**No backend change is required**, and that is deliberate. The backend sets no CORS headers, so
+the browser would block a direct call to its port; this change proxies `/graphql` through Vite
+instead of asking the other repo to call `enableCors` in the middle of its own in-flight change
+(design Decision 7). `VITE_GRAPHQL_URL` is the seam for the day a deployed frontend needs the
+other answer.
+
+**Dependencies**: react, react-dom, react-router, @tanstack/react-query, tailwindcss,
+@tailwindcss/vite (the v4 plugin `tailwind.md` requires), vite, typescript, vitest,
+@testing-library/react, @testing-library/user-event and @testing-library/jest-dom (both
+required by `testing.md`), @graphql-codegen/\*, graphql,
 @trivago/prettier-plugin-sort-imports, prettier, eslint.
 
 **Conventions**: this is the change that turns `frontend.md`, `tailwind.md` and `testing.md`

@@ -2,8 +2,8 @@
 
 Web UI for the KSP e-commerce catalog — **React + Vite + TypeScript + TanStack Query + Tailwind**.
 
-Part of the KSP learning project. This app does **not** hand-write its API layer: it generates
-a fully typed client from `ksp-backend`'s OpenAPI spec.
+Part of the KSP project. This app does **not** hand-write its API layer: it generates a fully
+typed client from `ksp-backend`'s committed GraphQL schema (`schema.gql`).
 
 ---
 
@@ -82,6 +82,6 @@ src/
 - **Money arrives as integer cents.** Format with `Intl.NumberFormat` at display time; never
   do currency math in floats.
 - **Loading, error and empty states are handled explicitly** — an unhandled error state is a bug.
-- **Tailwind is explained as it is introduced** (it's new to the author).
+- **Tailwind is explained as it is introduced** — an unfamiliar utility gets a note.
 
 Full conventions live in this repo's `.claude/rules/`.
